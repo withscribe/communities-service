@@ -1,0 +1,27 @@
+type Community {
+  id: ID! @unique
+  ownerId: ID
+  moderatorId: ID
+  name: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  stories: [StoryId!]!
+  members: [MemberId!]! @relation(name: "Members")
+  bannedMembers: [MemberId!]! @relation(name: "BannedMembers")
+  privacy: Privacy @default(value: PUBLIC)
+}
+
+enum Privacy {
+  PUBLIC
+  PRIVATE
+  INVITE_ONLY
+}
+
+type StoryId {
+  storyId: ID!
+}
+
+type MemberId {
+  memberId: ID!
+}

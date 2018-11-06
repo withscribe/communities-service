@@ -1,0 +1,34 @@
+version: '3'
+services:
+  communities-service:
+    image: prismagraphql/prisma:1.19
+    restart: always
+    ports:
+    - "4470:4470"
+    environment:
+      PRISMA_CONFIG: |
+        port: 4470
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: postgres
+            database: communitiesDB
+            host: postgres
+            port: 5432
+            user: prisma
+            password: prisma
+            migrations: true
+            rawAccess: true
+  postgres:
+    ports:
+      - '3001:5432'
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:

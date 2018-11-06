@@ -1,0 +1,49 @@
+type Query {
+  communityByName(name: String!): [Community!]!
+  communityById(id: ID!): Community
+  communities: [Community!]!
+  # storiesByCommunityName: [Community!]!
+  # storiesByCommunityId: [Community!]!
+}
+
+type Mutation {
+  createCommunity(name: String!, description: String, privacy: Privacy): Community
+  updateCommunity(id: ID!, name: String, description: String, privacy: Privacy): Community
+  deleteCommunity(id: ID!): Community
+  addStoryToCommunity(id: ID!, storyId: ID!): Community
+  removeStoryFromCommunity(id: ID!, storyId: ID!): Community
+  addMemberToCommunity(id: ID!, profileId: ID!): Community
+  inviteMemberToCommunity(id: ID!, profileId: ID!): Community
+}
+
+
+type Community {
+  id: ID!
+  ownerId: ID!
+  moderatorId: ID!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  stories: [StoryId]
+  members: [MemberId]
+  bannedMembers: [MemberId]
+  privacy: Privacy
+}
+
+type StoryId {
+  storyId: String!
+}
+
+type MemberId {
+  memberId: String!
+}
+
+enum Privacy {
+  PUBLIC
+  PRIVATE
+  INVITEONLY
+}
+
+# used to resolve Prisma DateTime type
+scalar DateTime

@@ -1,0 +1,31 @@
+{
+  "name": "scribe-communities-service",
+  "version": "1.0.0",
+  "description": "Communities microservice for Scribe",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon --exec node src/index.js",
+    "start": "pm2 start communities-service",
+    "restart": "pm2 restart communities-service"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/scribedevops/scribe-communities-service.git"
+  },
+  "author": "Austin Howlett",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/scribedevops/scribe-communities-service#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "graphql": "^0.13.2",
+    "graphql-yoga": "^1.16.7",
+    "jsonwebtoken": "^8.3.0",
+    "ora": "^3.0.0",
+    "prisma-client-lib": "^1.19.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.6"
+  }
+}
