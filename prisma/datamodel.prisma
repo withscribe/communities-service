@@ -6,9 +6,8 @@ type Community {
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  stories: [StoryId!]!
-  members: [MemberId!]! @relation(name: "Members")
-  bannedMembers: [MemberId!]! @relation(name: "BannedMembers")
+  membersIds: [ID!]!
+  bannedMembersIds: [ID!]!
   privacy: Privacy @default(value: PUBLIC)
 }
 
@@ -18,10 +17,3 @@ enum Privacy {
   INVITE_ONLY
 }
 
-type StoryId {
-  storyId: ID!
-}
-
-type MemberId {
-  memberId: ID!
-}

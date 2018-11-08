@@ -12,8 +12,6 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   community: (where?: CommunityWhereInput) => Promise<boolean>;
-  memberId: (where?: MemberIdWhereInput) => Promise<boolean>;
-  storyId: (where?: StoryIdWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -58,50 +56,6 @@ export interface Prisma {
       last?: Int;
     }
   ) => CommunityConnection;
-  memberIds: (
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<MemberIdNode>;
-  memberIdsConnection: (
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => MemberIdConnection;
-  storyIds: (
-    args?: {
-      where?: StoryIdWhereInput;
-      orderBy?: StoryIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<StoryIdNode>;
-  storyIdsConnection: (
-    args?: {
-      where?: StoryIdWhereInput;
-      orderBy?: StoryIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => StoryIdConnection;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -124,16 +78,6 @@ export interface Prisma {
   ) => Community;
   deleteCommunity: (where: CommunityWhereUniqueInput) => Community;
   deleteManyCommunities: (where?: CommunityWhereInput) => BatchPayload;
-  createMemberId: (data: MemberIdCreateInput) => MemberId;
-  updateManyMemberIds: (
-    args: { data: MemberIdUpdateInput; where?: MemberIdWhereInput }
-  ) => BatchPayload;
-  deleteManyMemberIds: (where?: MemberIdWhereInput) => BatchPayload;
-  createStoryId: (data: StoryIdCreateInput) => StoryId;
-  updateManyStoryIds: (
-    args: { data: StoryIdUpdateInput; where?: StoryIdWhereInput }
-  ) => BatchPayload;
-  deleteManyStoryIds: (where?: StoryIdWhereInput) => BatchPayload;
 
   /**
    * Subscriptions
@@ -146,12 +90,6 @@ export interface Subscription {
   community: (
     where?: CommunitySubscriptionWhereInput
   ) => CommunitySubscriptionPayloadSubscription;
-  memberId: (
-    where?: MemberIdSubscriptionWhereInput
-  ) => MemberIdSubscriptionPayloadSubscription;
-  storyId: (
-    where?: StoryIdSubscriptionWhereInput
-  ) => StoryIdSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -162,25 +100,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type StoryIdOrderByInput =
-  | "storyId_ASC"
-  | "storyId_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type MemberIdOrderByInput =
-  | "memberId_ASC"
-  | "memberId_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type Privacy = "PUBLIC" | "PRIVATE" | "INVITE_ONLY";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -202,14 +122,40 @@ export type CommunityOrderByInput =
   | "privacy_ASC"
   | "privacy_DESC";
 
-export type Privacy = "PUBLIC" | "PRIVATE" | "INVITE_ONLY";
-
 export type CommunityWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface MemberIdUpdateManyInput {
-  create?: MemberIdCreateInput[] | MemberIdCreateInput;
+export interface CommunityCreateInput {
+  ownerId?: ID_Input;
+  moderatorId?: ID_Input;
+  name: String;
+  description?: String;
+  membersIds?: CommunityCreatemembersIdsInput;
+  bannedMembersIds?: CommunityCreatebannedMembersIdsInput;
+  privacy?: Privacy;
+}
+
+export interface CommunityCreatemembersIdsInput {
+  set?: ID_Input[] | ID_Input;
+}
+
+export interface CommunityCreatebannedMembersIdsInput {
+  set?: ID_Input[] | ID_Input;
+}
+
+export interface CommunityUpdateInput {
+  ownerId?: ID_Input;
+  moderatorId?: ID_Input;
+  name?: String;
+  description?: String;
+  membersIds?: CommunityUpdatemembersIdsInput;
+  bannedMembersIds?: CommunityUpdatebannedMembersIdsInput;
+  privacy?: Privacy;
+}
+
+export interface CommunityUpdatemembersIdsInput {
+  set?: ID_Input[] | ID_Input;
 }
 
 export interface CommunitySubscriptionWhereInput {
@@ -221,49 +167,6 @@ export interface CommunitySubscriptionWhereInput {
   AND?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
   OR?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
   NOT?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
-}
-
-export interface StoryIdUpdateManyInput {
-  create?: StoryIdCreateInput[] | StoryIdCreateInput;
-}
-
-export interface MemberIdWhereInput {
-  memberId?: ID_Input;
-  memberId_not?: ID_Input;
-  memberId_in?: ID_Input[] | ID_Input;
-  memberId_not_in?: ID_Input[] | ID_Input;
-  memberId_lt?: ID_Input;
-  memberId_lte?: ID_Input;
-  memberId_gt?: ID_Input;
-  memberId_gte?: ID_Input;
-  memberId_contains?: ID_Input;
-  memberId_not_contains?: ID_Input;
-  memberId_starts_with?: ID_Input;
-  memberId_not_starts_with?: ID_Input;
-  memberId_ends_with?: ID_Input;
-  memberId_not_ends_with?: ID_Input;
-  AND?: MemberIdWhereInput[] | MemberIdWhereInput;
-  OR?: MemberIdWhereInput[] | MemberIdWhereInput;
-  NOT?: MemberIdWhereInput[] | MemberIdWhereInput;
-}
-
-export interface CommunityUpdateInput {
-  ownerId?: ID_Input;
-  moderatorId?: ID_Input;
-  name?: String;
-  description?: String;
-  stories?: StoryIdUpdateManyInput;
-  members?: MemberIdUpdateManyInput;
-  bannedMembers?: MemberIdUpdateManyInput;
-  privacy?: Privacy;
-}
-
-export interface MemberIdUpdateInput {
-  memberId?: ID_Input;
-}
-
-export interface MemberIdCreateInput {
-  memberId: ID_Input;
 }
 
 export interface CommunityWhereInput {
@@ -353,15 +256,6 @@ export interface CommunityWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  stories_every?: StoryIdWhereInput;
-  stories_some?: StoryIdWhereInput;
-  stories_none?: StoryIdWhereInput;
-  members_every?: MemberIdWhereInput;
-  members_some?: MemberIdWhereInput;
-  members_none?: MemberIdWhereInput;
-  bannedMembers_every?: MemberIdWhereInput;
-  bannedMembers_some?: MemberIdWhereInput;
-  bannedMembers_none?: MemberIdWhereInput;
   privacy?: Privacy;
   privacy_not?: Privacy;
   privacy_in?: Privacy[] | Privacy;
@@ -371,134 +265,28 @@ export interface CommunityWhereInput {
   NOT?: CommunityWhereInput[] | CommunityWhereInput;
 }
 
-export interface CommunityCreateInput {
-  ownerId?: ID_Input;
-  moderatorId?: ID_Input;
-  name: String;
-  description?: String;
-  stories?: StoryIdCreateManyInput;
-  members?: MemberIdCreateManyInput;
-  bannedMembers?: MemberIdCreateManyInput;
-  privacy?: Privacy;
-}
-
-export interface StoryIdCreateManyInput {
-  create?: StoryIdCreateInput[] | StoryIdCreateInput;
-}
-
-export interface StoryIdCreateInput {
-  storyId: ID_Input;
-}
-
-export interface MemberIdCreateManyInput {
-  create?: MemberIdCreateInput[] | MemberIdCreateInput;
-}
-
-export interface MemberIdSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: MemberIdWhereInput;
-  AND?: MemberIdSubscriptionWhereInput[] | MemberIdSubscriptionWhereInput;
-  OR?: MemberIdSubscriptionWhereInput[] | MemberIdSubscriptionWhereInput;
-  NOT?: MemberIdSubscriptionWhereInput[] | MemberIdSubscriptionWhereInput;
-}
-
-export interface StoryIdSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: StoryIdWhereInput;
-  AND?: StoryIdSubscriptionWhereInput[] | StoryIdSubscriptionWhereInput;
-  OR?: StoryIdSubscriptionWhereInput[] | StoryIdSubscriptionWhereInput;
-  NOT?: StoryIdSubscriptionWhereInput[] | StoryIdSubscriptionWhereInput;
-}
-
-export interface StoryIdWhereInput {
-  storyId?: ID_Input;
-  storyId_not?: ID_Input;
-  storyId_in?: ID_Input[] | ID_Input;
-  storyId_not_in?: ID_Input[] | ID_Input;
-  storyId_lt?: ID_Input;
-  storyId_lte?: ID_Input;
-  storyId_gt?: ID_Input;
-  storyId_gte?: ID_Input;
-  storyId_contains?: ID_Input;
-  storyId_not_contains?: ID_Input;
-  storyId_starts_with?: ID_Input;
-  storyId_not_starts_with?: ID_Input;
-  storyId_ends_with?: ID_Input;
-  storyId_not_ends_with?: ID_Input;
-  AND?: StoryIdWhereInput[] | StoryIdWhereInput;
-  OR?: StoryIdWhereInput[] | StoryIdWhereInput;
-  NOT?: StoryIdWhereInput[] | StoryIdWhereInput;
-}
-
-export interface StoryIdUpdateInput {
-  storyId?: ID_Input;
+export interface CommunityUpdatebannedMembersIdsInput {
+  set?: ID_Input[] | ID_Input;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface StoryIdEdgeNode {
-  cursor: String;
+export interface AggregateCommunityNode {
+  count: Int;
 }
 
-export interface StoryIdEdge extends Promise<StoryIdEdgeNode>, Fragmentable {
-  node: <T = StoryId>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface StoryIdEdgeSubscription
-  extends Promise<AsyncIterator<StoryIdEdgeNode>>,
+export interface AggregateCommunity
+  extends Promise<AggregateCommunityNode>,
     Fragmentable {
-  node: <T = StoryIdSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<Int>;
 }
 
-export interface CommunityConnectionNode {}
-
-export interface CommunityConnection
-  extends Promise<CommunityConnectionNode>,
+export interface AggregateCommunitySubscription
+  extends Promise<AsyncIterator<AggregateCommunityNode>>,
     Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<CommunityEdgeNode>>() => T;
-  aggregate: <T = AggregateCommunity>() => T;
-}
-
-export interface CommunityConnectionSubscription
-  extends Promise<AsyncIterator<CommunityConnectionNode>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CommunityEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCommunitySubscription>() => T;
-}
-
-export interface MemberIdSubscriptionPayloadNode {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface MemberIdSubscriptionPayload
-  extends Promise<MemberIdSubscriptionPayloadNode>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MemberId>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MemberIdPreviousValues>() => T;
-}
-
-export interface MemberIdSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MemberIdSubscriptionPayloadNode>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MemberIdSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MemberIdPreviousValuesSubscription>() => T;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface BatchPayloadNode {
@@ -513,100 +301,6 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayloadNode>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface StoryIdPreviousValuesNode {
-  storyId: ID_Output;
-}
-
-export interface StoryIdPreviousValues
-  extends Promise<StoryIdPreviousValuesNode>,
-    Fragmentable {
-  storyId: () => Promise<ID_Output>;
-}
-
-export interface StoryIdPreviousValuesSubscription
-  extends Promise<AsyncIterator<StoryIdPreviousValuesNode>>,
-    Fragmentable {
-  storyId: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface AggregateStoryIdNode {
-  count: Int;
-}
-
-export interface AggregateStoryId
-  extends Promise<AggregateStoryIdNode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateStoryIdSubscription
-  extends Promise<AsyncIterator<AggregateStoryIdNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateMemberIdNode {
-  count: Int;
-}
-
-export interface AggregateMemberId
-  extends Promise<AggregateMemberIdNode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMemberIdSubscription
-  extends Promise<AsyncIterator<AggregateMemberIdNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MemberIdNode {
-  memberId: ID_Output;
-}
-
-export interface MemberId extends Promise<MemberIdNode>, Fragmentable {
-  memberId: () => Promise<ID_Output>;
-}
-
-export interface MemberIdSubscription
-  extends Promise<AsyncIterator<MemberIdNode>>,
-    Fragmentable {
-  memberId: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface MemberIdConnectionNode {}
-
-export interface MemberIdConnection
-  extends Promise<MemberIdConnectionNode>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<MemberIdEdgeNode>>() => T;
-  aggregate: <T = AggregateMemberId>() => T;
-}
-
-export interface MemberIdConnectionSubscription
-  extends Promise<AsyncIterator<MemberIdConnectionNode>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MemberIdEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMemberIdSubscription>() => T;
-}
-
-export interface StoryIdNode {
-  storyId: ID_Output;
-}
-
-export interface StoryId extends Promise<StoryIdNode>, Fragmentable {
-  storyId: () => Promise<ID_Output>;
-}
-
-export interface StoryIdSubscription
-  extends Promise<AsyncIterator<StoryIdNode>>,
-    Fragmentable {
-  storyId: () => Promise<AsyncIterator<ID_Output>>;
 }
 
 export interface CommunityEdgeNode {
@@ -625,6 +319,65 @@ export interface CommunityEdgeSubscription
     Fragmentable {
   node: <T = CommunitySubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CommunityNode {
+  id: ID_Output;
+  ownerId?: ID_Output;
+  moderatorId?: ID_Output;
+  name: String;
+  description?: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  membersIds: ID_Output[];
+  bannedMembersIds: ID_Output[];
+  privacy?: Privacy;
+}
+
+export interface Community extends Promise<CommunityNode>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  ownerId: () => Promise<ID_Output>;
+  moderatorId: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  description: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  membersIds: () => Promise<ID_Output[]>;
+  bannedMembersIds: () => Promise<ID_Output[]>;
+  privacy: () => Promise<Privacy>;
+}
+
+export interface CommunitySubscription
+  extends Promise<AsyncIterator<CommunityNode>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  ownerId: () => Promise<AsyncIterator<ID_Output>>;
+  moderatorId: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  membersIds: () => Promise<AsyncIterator<ID_Output[]>>;
+  bannedMembersIds: () => Promise<AsyncIterator<ID_Output[]>>;
+  privacy: () => Promise<AsyncIterator<Privacy>>;
+}
+
+export interface CommunityConnectionNode {}
+
+export interface CommunityConnection
+  extends Promise<CommunityConnectionNode>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<CommunityEdgeNode>>() => T;
+  aggregate: <T = AggregateCommunity>() => T;
+}
+
+export interface CommunityConnectionSubscription
+  extends Promise<AsyncIterator<CommunityConnectionNode>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CommunityEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCommunitySubscription>() => T;
 }
 
 export interface PageInfoNode {
@@ -650,43 +403,6 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CommunityPreviousValuesNode {
-  id: ID_Output;
-  ownerId?: ID_Output;
-  moderatorId?: ID_Output;
-  name: String;
-  description?: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  privacy?: Privacy;
-}
-
-export interface CommunityPreviousValues
-  extends Promise<CommunityPreviousValuesNode>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  ownerId: () => Promise<ID_Output>;
-  moderatorId: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  description: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  privacy: () => Promise<Privacy>;
-}
-
-export interface CommunityPreviousValuesSubscription
-  extends Promise<AsyncIterator<CommunityPreviousValuesNode>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  ownerId: () => Promise<AsyncIterator<ID_Output>>;
-  moderatorId: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  privacy: () => Promise<AsyncIterator<Privacy>>;
-}
-
 export interface CommunitySubscriptionPayloadNode {
   mutation: MutationType;
   updatedFields?: String[];
@@ -710,23 +426,7 @@ export interface CommunitySubscriptionPayloadSubscription
   previousValues: <T = CommunityPreviousValuesSubscription>() => T;
 }
 
-export interface MemberIdPreviousValuesNode {
-  memberId: ID_Output;
-}
-
-export interface MemberIdPreviousValues
-  extends Promise<MemberIdPreviousValuesNode>,
-    Fragmentable {
-  memberId: () => Promise<ID_Output>;
-}
-
-export interface MemberIdPreviousValuesSubscription
-  extends Promise<AsyncIterator<MemberIdPreviousValuesNode>>,
-    Fragmentable {
-  memberId: () => Promise<AsyncIterator<ID_Output>>;
-}
-
-export interface CommunityNode {
+export interface CommunityPreviousValuesNode {
   id: ID_Output;
   ownerId?: ID_Output;
   moderatorId?: ID_Output;
@@ -734,10 +434,14 @@ export interface CommunityNode {
   description?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  membersIds: ID_Output[];
+  bannedMembersIds: ID_Output[];
   privacy?: Privacy;
 }
 
-export interface Community extends Promise<CommunityNode>, Fragmentable {
+export interface CommunityPreviousValues
+  extends Promise<CommunityPreviousValuesNode>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
   ownerId: () => Promise<ID_Output>;
   moderatorId: () => Promise<ID_Output>;
@@ -745,44 +449,13 @@ export interface Community extends Promise<CommunityNode>, Fragmentable {
   description: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  stories: <T = FragmentableArray<StoryIdNode>>(
-    args?: {
-      where?: StoryIdWhereInput;
-      orderBy?: StoryIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  members: <T = FragmentableArray<MemberIdNode>>(
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  bannedMembers: <T = FragmentableArray<MemberIdNode>>(
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
+  membersIds: () => Promise<ID_Output[]>;
+  bannedMembersIds: () => Promise<ID_Output[]>;
   privacy: () => Promise<Privacy>;
 }
 
-export interface CommunitySubscription
-  extends Promise<AsyncIterator<CommunityNode>>,
+export interface CommunityPreviousValuesSubscription
+  extends Promise<AsyncIterator<CommunityPreviousValuesNode>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   ownerId: () => Promise<AsyncIterator<ID_Output>>;
@@ -791,116 +464,20 @@ export interface CommunitySubscription
   description: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  stories: <T = Promise<AsyncIterator<StoryIdSubscription>>>(
-    args?: {
-      where?: StoryIdWhereInput;
-      orderBy?: StoryIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  members: <T = Promise<AsyncIterator<MemberIdSubscription>>>(
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  bannedMembers: <T = Promise<AsyncIterator<MemberIdSubscription>>>(
-    args?: {
-      where?: MemberIdWhereInput;
-      orderBy?: MemberIdOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
+  membersIds: () => Promise<AsyncIterator<ID_Output[]>>;
+  bannedMembersIds: () => Promise<AsyncIterator<ID_Output[]>>;
   privacy: () => Promise<AsyncIterator<Privacy>>;
 }
 
-export interface StoryIdConnectionNode {}
+/*
+DateTime scalar input type, allowing Date
+*/
+export type DateTimeInput = Date | string;
 
-export interface StoryIdConnection
-  extends Promise<StoryIdConnectionNode>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<StoryIdEdgeNode>>() => T;
-  aggregate: <T = AggregateStoryId>() => T;
-}
-
-export interface StoryIdConnectionSubscription
-  extends Promise<AsyncIterator<StoryIdConnectionNode>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<StoryIdEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateStoryIdSubscription>() => T;
-}
-
-export interface StoryIdSubscriptionPayloadNode {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface StoryIdSubscriptionPayload
-  extends Promise<StoryIdSubscriptionPayloadNode>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = StoryId>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = StoryIdPreviousValues>() => T;
-}
-
-export interface StoryIdSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<StoryIdSubscriptionPayloadNode>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = StoryIdSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = StoryIdPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateCommunityNode {
-  count: Int;
-}
-
-export interface AggregateCommunity
-  extends Promise<AggregateCommunityNode>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCommunitySubscription
-  extends Promise<AsyncIterator<AggregateCommunityNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MemberIdEdgeNode {
-  cursor: String;
-}
-
-export interface MemberIdEdge extends Promise<MemberIdEdgeNode>, Fragmentable {
-  node: <T = MemberId>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MemberIdEdgeSubscription
-  extends Promise<AsyncIterator<MemberIdEdgeNode>>,
-    Fragmentable {
-  node: <T = MemberIdSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export type Long = string;
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -919,19 +496,11 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
-DateTime scalar input type, allowing Date
-*/
-export type DateTimeInput = Date | string;
-
-/*
-DateTime scalar output type, which is always a string
-*/
-export type DateTimeOutput = string;
-
-/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+export type Long = string;
 
 /**
  * Type Defs

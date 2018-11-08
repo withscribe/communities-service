@@ -20,7 +20,6 @@ const server = new GraphQLServer({
     })
 })
 
-
 const options = {
     port: process.env.PORT,
     endpoint: '/communities',

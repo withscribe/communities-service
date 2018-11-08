@@ -1,18 +1,18 @@
 const { verifyToken } = require('../utils')
 const { communityFragment } = require('../fragments/communityFragment')
 
-createCommunity = (_, args, context, info) => {
+createCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
-  return context.prisma.createCommunity({
+  return await context.prisma.createCommunity({
     name: args.name,
     description: args.description,
     privacy: args.privacy
   }).$fragment(communityFragment)
 }
 
-updateCommunity = (_, args, context, info) => {
+updateCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
-  return context.prisma.updateCommunity({
+  return await context.prisma.updateCommunity({
     where: {
       id: args.id
     },
@@ -24,15 +24,15 @@ updateCommunity = (_, args, context, info) => {
   }).$fragment(communityFragment)
 }
 
-deleteCommunity = (_, args, context, info) => {
+deleteCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
-  return context.prisma.deleteCommunity({ id: args.id })
+  return await context.prisma.deleteCommunity({ id: args.id })
     .$fragment(communityFragment)
 }
 
-addStoryToCommunity = (_, args, context, info) => {
+addStoryToCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
-  return context.prisma.updateCommunity({
+  return await context.prisma.updateCommunity({
     where: {
       id: args.id
     },
@@ -46,36 +46,38 @@ addStoryToCommunity = (_, args, context, info) => {
   }).$fragment(communityFragment)
 }
 
-removeStoryFromCommunity = (_, args, context, info) => {
-    const payload = verifyToken(context)
-    return context.prisma.updateCommunity({
-      where: {
-          id: args.id
-      },
-      data: {
-        stories: {
-          disconnect: [{
-            storyId: args.storyId
-          }]
-        }
+removeStoryFromCommunity = async (_, args, context, info) => {
+  const payload = verifyToken(context)
+  return await context.prisma.updateCommunity({
+    where: {
+        id: args.id
+    },
+    data: {
+      stories: {
+        disconnect: [{
+          storyId: args.storyId
+        }]
       }
-    }).$fragment(communityFragment)
+    }
+  }).$fragment(communityFragment)
 }
 
-addMemberToCommunity = (_, args, context, info) => {
-    const payload = verifyToken(context)
-    return context.prisma.updateCommunity({
-      where: {
-        id: args.id
-      },
-      data: {
-        members: {
-          create: [{
-            memberId: args.profileId
-          }]
-        }
+setMemberToCommunity = async (_, args, context, info) => {
+  const payload = verifyToken(context)
+  const community = await context.prisma.community({ id: args.id })
+  const updatedList = community.membersIds
+  updatedList.push(args.profileId)
+
+  return await context.prisma.updateCommunity({
+    where: {
+      id: args.id
+    },
+    data: {
+      membersIds: {
+        set: updatedList
       }
-    }).$fragment(communityFragment)
+    }
+  }).$fragment(communityFragment)
 }
 
 inviteMemberToCommunity = (_, args, context, info) => {
@@ -90,6 +92,6 @@ module.exports = {
     deleteCommunity,
     addStoryToCommunity,
     removeStoryFromCommunity,
-    addMemberToCommunity,
+    setMemberToCommunity,
     inviteMemberToCommunity,
 }

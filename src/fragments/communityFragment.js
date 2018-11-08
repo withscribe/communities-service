@@ -7,15 +7,8 @@ const communityFragment = `
     moderatorId
     createdAt
     updatedAt
-    stories {
-      storyId
-    }
-    members {
-      memberId
-    }
-    bannedMembers {
-      memberId
-    }
+    membersIds
+    bannedMembersIds
     privacy
   }
 `

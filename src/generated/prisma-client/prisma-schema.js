@@ -3,14 +3,6 @@ module.exports = {
   count: Int!
 }
 
-type AggregateMemberId {
-  count: Int!
-}
-
-type AggregateStoryId {
-  count: Int!
-}
-
 type BatchPayload {
   count: Long!
 }
@@ -23,9 +15,8 @@ type Community {
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  stories(where: StoryIdWhereInput, orderBy: StoryIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoryId!]
-  members(where: MemberIdWhereInput, orderBy: MemberIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MemberId!]
-  bannedMembers(where: MemberIdWhereInput, orderBy: MemberIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MemberId!]
+  membersIds: [ID!]!
+  bannedMembersIds: [ID!]!
   privacy: Privacy
 }
 
@@ -35,15 +26,22 @@ type CommunityConnection {
   aggregate: AggregateCommunity!
 }
 
+input CommunityCreatebannedMembersIdsInput {
+  set: [ID!]
+}
+
 input CommunityCreateInput {
   ownerId: ID
   moderatorId: ID
   name: String!
   description: String
-  stories: StoryIdCreateManyInput
-  members: MemberIdCreateManyInput
-  bannedMembers: MemberIdCreateManyInput
+  membersIds: CommunityCreatemembersIdsInput
+  bannedMembersIds: CommunityCreatebannedMembersIdsInput
   privacy: Privacy
+}
+
+input CommunityCreatemembersIdsInput {
+  set: [ID!]
 }
 
 type CommunityEdge {
@@ -78,6 +76,8 @@ type CommunityPreviousValues {
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  membersIds: [ID!]!
+  bannedMembersIds: [ID!]!
   privacy: Privacy
 }
 
@@ -99,15 +99,22 @@ input CommunitySubscriptionWhereInput {
   NOT: [CommunitySubscriptionWhereInput!]
 }
 
+input CommunityUpdatebannedMembersIdsInput {
+  set: [ID!]
+}
+
 input CommunityUpdateInput {
   ownerId: ID
   moderatorId: ID
   name: String
   description: String
-  stories: StoryIdUpdateManyInput
-  members: MemberIdUpdateManyInput
-  bannedMembers: MemberIdUpdateManyInput
+  membersIds: CommunityUpdatemembersIdsInput
+  bannedMembersIds: CommunityUpdatebannedMembersIdsInput
   privacy: Privacy
+}
+
+input CommunityUpdatemembersIdsInput {
+  set: [ID!]
 }
 
 input CommunityWhereInput {
@@ -197,15 +204,6 @@ input CommunityWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  stories_every: StoryIdWhereInput
-  stories_some: StoryIdWhereInput
-  stories_none: StoryIdWhereInput
-  members_every: MemberIdWhereInput
-  members_some: MemberIdWhereInput
-  members_none: MemberIdWhereInput
-  bannedMembers_every: MemberIdWhereInput
-  bannedMembers_some: MemberIdWhereInput
-  bannedMembers_none: MemberIdWhereInput
   privacy: Privacy
   privacy_not: Privacy
   privacy_in: [Privacy!]
@@ -223,90 +221,6 @@ scalar DateTime
 
 scalar Long
 
-type MemberId {
-  memberId: ID!
-}
-
-type MemberIdConnection {
-  pageInfo: PageInfo!
-  edges: [MemberIdEdge]!
-  aggregate: AggregateMemberId!
-}
-
-input MemberIdCreateInput {
-  memberId: ID!
-}
-
-input MemberIdCreateManyInput {
-  create: [MemberIdCreateInput!]
-}
-
-type MemberIdEdge {
-  node: MemberId!
-  cursor: String!
-}
-
-enum MemberIdOrderByInput {
-  memberId_ASC
-  memberId_DESC
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type MemberIdPreviousValues {
-  memberId: ID!
-}
-
-type MemberIdSubscriptionPayload {
-  mutation: MutationType!
-  node: MemberId
-  updatedFields: [String!]
-  previousValues: MemberIdPreviousValues
-}
-
-input MemberIdSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: MemberIdWhereInput
-  AND: [MemberIdSubscriptionWhereInput!]
-  OR: [MemberIdSubscriptionWhereInput!]
-  NOT: [MemberIdSubscriptionWhereInput!]
-}
-
-input MemberIdUpdateInput {
-  memberId: ID
-}
-
-input MemberIdUpdateManyInput {
-  create: [MemberIdCreateInput!]
-}
-
-input MemberIdWhereInput {
-  memberId: ID
-  memberId_not: ID
-  memberId_in: [ID!]
-  memberId_not_in: [ID!]
-  memberId_lt: ID
-  memberId_lte: ID
-  memberId_gt: ID
-  memberId_gte: ID
-  memberId_contains: ID
-  memberId_not_contains: ID
-  memberId_starts_with: ID
-  memberId_not_starts_with: ID
-  memberId_ends_with: ID
-  memberId_not_ends_with: ID
-  AND: [MemberIdWhereInput!]
-  OR: [MemberIdWhereInput!]
-  NOT: [MemberIdWhereInput!]
-}
-
 type Mutation {
   createCommunity(data: CommunityCreateInput!): Community!
   updateCommunity(data: CommunityUpdateInput!, where: CommunityWhereUniqueInput!): Community
@@ -314,12 +228,6 @@ type Mutation {
   upsertCommunity(where: CommunityWhereUniqueInput!, create: CommunityCreateInput!, update: CommunityUpdateInput!): Community!
   deleteCommunity(where: CommunityWhereUniqueInput!): Community
   deleteManyCommunities(where: CommunityWhereInput): BatchPayload!
-  createMemberId(data: MemberIdCreateInput!): MemberId!
-  updateManyMemberIds(data: MemberIdUpdateInput!, where: MemberIdWhereInput): BatchPayload!
-  deleteManyMemberIds(where: MemberIdWhereInput): BatchPayload!
-  createStoryId(data: StoryIdCreateInput!): StoryId!
-  updateManyStoryIds(data: StoryIdUpdateInput!, where: StoryIdWhereInput): BatchPayload!
-  deleteManyStoryIds(where: StoryIdWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -349,101 +257,11 @@ type Query {
   community(where: CommunityWhereUniqueInput!): Community
   communities(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Community]!
   communitiesConnection(where: CommunityWhereInput, orderBy: CommunityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommunityConnection!
-  memberIds(where: MemberIdWhereInput, orderBy: MemberIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MemberId]!
-  memberIdsConnection(where: MemberIdWhereInput, orderBy: MemberIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MemberIdConnection!
-  storyIds(where: StoryIdWhereInput, orderBy: StoryIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoryId]!
-  storyIdsConnection(where: StoryIdWhereInput, orderBy: StoryIdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoryIdConnection!
   node(id: ID!): Node
-}
-
-type StoryId {
-  storyId: ID!
-}
-
-type StoryIdConnection {
-  pageInfo: PageInfo!
-  edges: [StoryIdEdge]!
-  aggregate: AggregateStoryId!
-}
-
-input StoryIdCreateInput {
-  storyId: ID!
-}
-
-input StoryIdCreateManyInput {
-  create: [StoryIdCreateInput!]
-}
-
-type StoryIdEdge {
-  node: StoryId!
-  cursor: String!
-}
-
-enum StoryIdOrderByInput {
-  storyId_ASC
-  storyId_DESC
-  id_ASC
-  id_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type StoryIdPreviousValues {
-  storyId: ID!
-}
-
-type StoryIdSubscriptionPayload {
-  mutation: MutationType!
-  node: StoryId
-  updatedFields: [String!]
-  previousValues: StoryIdPreviousValues
-}
-
-input StoryIdSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: StoryIdWhereInput
-  AND: [StoryIdSubscriptionWhereInput!]
-  OR: [StoryIdSubscriptionWhereInput!]
-  NOT: [StoryIdSubscriptionWhereInput!]
-}
-
-input StoryIdUpdateInput {
-  storyId: ID
-}
-
-input StoryIdUpdateManyInput {
-  create: [StoryIdCreateInput!]
-}
-
-input StoryIdWhereInput {
-  storyId: ID
-  storyId_not: ID
-  storyId_in: [ID!]
-  storyId_not_in: [ID!]
-  storyId_lt: ID
-  storyId_lte: ID
-  storyId_gt: ID
-  storyId_gte: ID
-  storyId_contains: ID
-  storyId_not_contains: ID
-  storyId_starts_with: ID
-  storyId_not_starts_with: ID
-  storyId_ends_with: ID
-  storyId_not_ends_with: ID
-  AND: [StoryIdWhereInput!]
-  OR: [StoryIdWhereInput!]
-  NOT: [StoryIdWhereInput!]
 }
 
 type Subscription {
   community(where: CommunitySubscriptionWhereInput): CommunitySubscriptionPayload
-  memberId(where: MemberIdSubscriptionWhereInput): MemberIdSubscriptionPayload
-  storyId(where: StoryIdSubscriptionWhereInput): StoryIdSubscriptionPayload
 }
 `
       }

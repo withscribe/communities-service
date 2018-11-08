@@ -19,8 +19,15 @@ communities = (_, args, context, info) => {
     .$fragment(communityFragment)
 }
 
+membersCommunities = (_, args, context, info) => {
+  const payload = verifyToken(context)
+  return context.prisma.communities({ where: { id_in: args.communitiesIds }})
+    .$fragment(communityFragment)
+}
+
 module.exports = {
   communityById,
   communityByName,
-  communities
+  communities,
+  membersCommunities
 }

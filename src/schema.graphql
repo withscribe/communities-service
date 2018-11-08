@@ -2,8 +2,7 @@ type Query {
   communityByName(name: String!): [Community!]!
   communityById(id: ID!): Community
   communities: [Community!]!
-  # storiesByCommunityName: [Community!]!
-  # storiesByCommunityId: [Community!]!
+  membersCommunities(communitiesIds: [ID!]!): [Community!]!
 }
 
 type Mutation {
@@ -12,7 +11,7 @@ type Mutation {
   deleteCommunity(id: ID!): Community
   addStoryToCommunity(id: ID!, storyId: ID!): Community
   removeStoryFromCommunity(id: ID!, storyId: ID!): Community
-  addMemberToCommunity(id: ID!, profileId: ID!): Community
+  setMemberToCommunity(id: ID!, profileId: ID!): Community
   inviteMemberToCommunity(id: ID!, profileId: ID!): Community
 }
 
@@ -25,18 +24,9 @@ type Community {
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  stories: [StoryId]
-  members: [MemberId]
-  bannedMembers: [MemberId]
+  membersIds: [ID]
+  bannedMembersIds: [ID]
   privacy: Privacy
-}
-
-type StoryId {
-  storyId: String!
-}
-
-type MemberId {
-  memberId: String!
 }
 
 enum Privacy {
