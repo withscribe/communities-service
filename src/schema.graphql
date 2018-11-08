@@ -32,7 +32,7 @@ type Community {
 enum Privacy {
   PUBLIC
   PRIVATE
-  INVITEONLY
+  INVITE_ONLY
 }
 
 # used to resolve Prisma DateTime type
