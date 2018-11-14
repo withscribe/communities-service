@@ -1,7 +1,7 @@
 type Community {
   id: ID! @unique
   ownerId: ID
-  moderatorId: ID
+  moderatorId: String @default(value: "No Moderator")
   name: String!
   description: String
   createdAt: DateTime!

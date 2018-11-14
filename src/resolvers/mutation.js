@@ -2,8 +2,9 @@ const { verifyToken } = require('../utils')
 const { communityFragment } = require('../fragments/communityFragment')
 
 createCommunity = async (_, args, context, info) => {
-  const payload = verifyToken(context)
+  //const payload = verifyToken(context)
   return await context.prisma.createCommunity({
+    ownerId: args.ownerId,
     name: args.name,
     description: args.description,
     privacy: args.privacy
@@ -19,13 +20,14 @@ updateCommunity = async (_, args, context, info) => {
     data: {
       name: args.name,
       description: args.description,
+      moderatorId: args.moderatorId,
       privacy: args.privacy
     }
   }).$fragment(communityFragment)
 }
 
 deleteCommunity = async (_, args, context, info) => {
-  const payload = verifyToken(context)
+  //const payload = verifyToken(context)
   return await context.prisma.deleteCommunity({ id: args.id })
     .$fragment(communityFragment)
 }

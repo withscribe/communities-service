@@ -6,8 +6,8 @@ type Query {
 }
 
 type Mutation {
-  createCommunity(name: String!, description: String, privacy: Privacy): Community
-  updateCommunity(id: ID!, name: String, description: String, privacy: Privacy): Community
+  createCommunity(ownerId: ID!, name: String!, description: String, privacy: Privacy): Community
+  updateCommunity(id: ID!, name: String, description: String, moderatorId: ID, privacy: Privacy): Community
   deleteCommunity(id: ID!): Community
   addStoryToCommunity(id: ID!, storyId: ID!): Community
   removeStoryFromCommunity(id: ID!, storyId: ID!): Community

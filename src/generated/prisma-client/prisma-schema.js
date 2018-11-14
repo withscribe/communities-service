@@ -10,7 +10,7 @@ type BatchPayload {
 type Community {
   id: ID!
   ownerId: ID
-  moderatorId: ID
+  moderatorId: String
   name: String!
   description: String
   createdAt: DateTime!
@@ -32,7 +32,7 @@ input CommunityCreatebannedMembersIdsInput {
 
 input CommunityCreateInput {
   ownerId: ID
-  moderatorId: ID
+  moderatorId: String
   name: String!
   description: String
   membersIds: CommunityCreatemembersIdsInput
@@ -71,7 +71,7 @@ enum CommunityOrderByInput {
 type CommunityPreviousValues {
   id: ID!
   ownerId: ID
-  moderatorId: ID
+  moderatorId: String
   name: String!
   description: String
   createdAt: DateTime!
@@ -105,7 +105,7 @@ input CommunityUpdatebannedMembersIdsInput {
 
 input CommunityUpdateInput {
   ownerId: ID
-  moderatorId: ID
+  moderatorId: String
   name: String
   description: String
   membersIds: CommunityUpdatemembersIdsInput
@@ -146,20 +146,20 @@ input CommunityWhereInput {
   ownerId_not_starts_with: ID
   ownerId_ends_with: ID
   ownerId_not_ends_with: ID
-  moderatorId: ID
-  moderatorId_not: ID
-  moderatorId_in: [ID!]
-  moderatorId_not_in: [ID!]
-  moderatorId_lt: ID
-  moderatorId_lte: ID
-  moderatorId_gt: ID
-  moderatorId_gte: ID
-  moderatorId_contains: ID
-  moderatorId_not_contains: ID
-  moderatorId_starts_with: ID
-  moderatorId_not_starts_with: ID
-  moderatorId_ends_with: ID
-  moderatorId_not_ends_with: ID
+  moderatorId: String
+  moderatorId_not: String
+  moderatorId_in: [String!]
+  moderatorId_not_in: [String!]
+  moderatorId_lt: String
+  moderatorId_lte: String
+  moderatorId_gt: String
+  moderatorId_gte: String
+  moderatorId_contains: String
+  moderatorId_not_contains: String
+  moderatorId_starts_with: String
+  moderatorId_not_starts_with: String
+  moderatorId_ends_with: String
+  moderatorId_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]

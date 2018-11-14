@@ -128,7 +128,7 @@ export type CommunityWhereUniqueInput = AtLeastOne<{
 
 export interface CommunityCreateInput {
   ownerId?: ID_Input;
-  moderatorId?: ID_Input;
+  moderatorId?: String;
   name: String;
   description?: String;
   membersIds?: CommunityCreatemembersIdsInput;
@@ -146,7 +146,7 @@ export interface CommunityCreatebannedMembersIdsInput {
 
 export interface CommunityUpdateInput {
   ownerId?: ID_Input;
-  moderatorId?: ID_Input;
+  moderatorId?: String;
   name?: String;
   description?: String;
   membersIds?: CommunityUpdatemembersIdsInput;
@@ -198,20 +198,20 @@ export interface CommunityWhereInput {
   ownerId_not_starts_with?: ID_Input;
   ownerId_ends_with?: ID_Input;
   ownerId_not_ends_with?: ID_Input;
-  moderatorId?: ID_Input;
-  moderatorId_not?: ID_Input;
-  moderatorId_in?: ID_Input[] | ID_Input;
-  moderatorId_not_in?: ID_Input[] | ID_Input;
-  moderatorId_lt?: ID_Input;
-  moderatorId_lte?: ID_Input;
-  moderatorId_gt?: ID_Input;
-  moderatorId_gte?: ID_Input;
-  moderatorId_contains?: ID_Input;
-  moderatorId_not_contains?: ID_Input;
-  moderatorId_starts_with?: ID_Input;
-  moderatorId_not_starts_with?: ID_Input;
-  moderatorId_ends_with?: ID_Input;
-  moderatorId_not_ends_with?: ID_Input;
+  moderatorId?: String;
+  moderatorId_not?: String;
+  moderatorId_in?: String[] | String;
+  moderatorId_not_in?: String[] | String;
+  moderatorId_lt?: String;
+  moderatorId_lte?: String;
+  moderatorId_gt?: String;
+  moderatorId_gte?: String;
+  moderatorId_contains?: String;
+  moderatorId_not_contains?: String;
+  moderatorId_starts_with?: String;
+  moderatorId_not_starts_with?: String;
+  moderatorId_ends_with?: String;
+  moderatorId_not_ends_with?: String;
   name?: String;
   name_not?: String;
   name_in?: String[] | String;
@@ -324,7 +324,7 @@ export interface CommunityEdgeSubscription
 export interface CommunityNode {
   id: ID_Output;
   ownerId?: ID_Output;
-  moderatorId?: ID_Output;
+  moderatorId?: String;
   name: String;
   description?: String;
   createdAt: DateTimeOutput;
@@ -337,7 +337,7 @@ export interface CommunityNode {
 export interface Community extends Promise<CommunityNode>, Fragmentable {
   id: () => Promise<ID_Output>;
   ownerId: () => Promise<ID_Output>;
-  moderatorId: () => Promise<ID_Output>;
+  moderatorId: () => Promise<String>;
   name: () => Promise<String>;
   description: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -352,7 +352,7 @@ export interface CommunitySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   ownerId: () => Promise<AsyncIterator<ID_Output>>;
-  moderatorId: () => Promise<AsyncIterator<ID_Output>>;
+  moderatorId: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -429,7 +429,7 @@ export interface CommunitySubscriptionPayloadSubscription
 export interface CommunityPreviousValuesNode {
   id: ID_Output;
   ownerId?: ID_Output;
-  moderatorId?: ID_Output;
+  moderatorId?: String;
   name: String;
   description?: String;
   createdAt: DateTimeOutput;
@@ -444,7 +444,7 @@ export interface CommunityPreviousValues
     Fragmentable {
   id: () => Promise<ID_Output>;
   ownerId: () => Promise<ID_Output>;
-  moderatorId: () => Promise<ID_Output>;
+  moderatorId: () => Promise<String>;
   name: () => Promise<String>;
   description: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -459,7 +459,7 @@ export interface CommunityPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   ownerId: () => Promise<AsyncIterator<ID_Output>>;
-  moderatorId: () => Promise<AsyncIterator<ID_Output>>;
+  moderatorId: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;

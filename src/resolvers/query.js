@@ -14,7 +14,7 @@ communityByName = (_, args, context, info) => {
 }
 
 communities = (_, args, context, info) => {
-  const payload = verifyToken(context)
+  //const payload = verifyToken(context)
   return context.prisma.communities()
     .$fragment(communityFragment)
 }
