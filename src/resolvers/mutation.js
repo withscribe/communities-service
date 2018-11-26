@@ -32,49 +32,52 @@ deleteCommunity = async (_, args, context, info) => {
     .$fragment(communityFragment)
 }
 
-addStoryToCommunity = async (_, args, context, info) => {
+setStoryToCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
+  const community = await context.prisma.community({ id: args.id })
+  const updatedList = community.storyIds
+  updatedList.push(args.storyId)
   return await context.prisma.updateCommunity({
     where: {
       id: args.id
     },
     data: {
-      stories: {
-        create: [{
-          storyId: args.storyId
-        }]
+      storyIds: {
+        set: updatedList
       }
     }
   }).$fragment(communityFragment)
 }
 
-addStoryToCommunityByName = async (_, args, context, info) => {
+setStoryToCommunityByName = async (_, args, context, info) => {
   const payload = verifyToken(context)
+  const community = await context.prisma.community({ id: args.id })
+  const updatedList = community.storyIds
+  updatedList.push(args.storyId)
   return await context.prisma.updateCommunity({
     where: {
       name: args.name
     },
     data: {
-      stories: {
-        create: [{
-          storyId: args.storyId
-        }]
+      storyIds: {
+        set: updatedList
       }
     }
   }).$fragment(communityFragment)
 }
 
-removeStoryFromCommunity = async (_, args, context, info) => {
+deleteStoryFromCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
+  const community = await context.prisma.community({ id: args.id })
+  let updatedList = community.storyIds
+  updatedList = updatedList.filter(member => member !== args.storyId)
   return await context.prisma.updateCommunity({
     where: {
         id: args.id
     },
     data: {
-      stories: {
-        disconnect: [{
-          storyId: args.storyId
-        }]
+      storyIds: {
+        set: updatedList
       }
     }
   }).$fragment(communityFragment)
@@ -103,7 +106,6 @@ removeMemberFromCommunity = async (_, args, context, info) => {
   const community = await context.prisma.community({ id: args.id })
   let updatedList = community.membersIds
   updatedList = updatedList.filter(member => member !== args.profileId)
-  console.log()
   return await context.prisma.updateCommunity({
     where: {
       id: args.id
@@ -126,8 +128,10 @@ module.exports = {
     createCommunity,
     updateCommunity,
     deleteCommunity,
-    addStoryToCommunity,
-    removeStoryFromCommunity,
+    setStoryToCommunity,
+    setStoryToCommunityByName,
+    deleteStoryFromCommunity,
     setMemberToCommunity,
+    removeMemberFromCommunity,
     inviteMemberToCommunity,
 }

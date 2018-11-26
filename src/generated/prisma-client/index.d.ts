@@ -102,8 +102,6 @@ export interface ClientConstructor<T> {
 
 export type Privacy = "PUBLIC" | "PRIVATE" | "INVITE_ONLY";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
 export type CommunityOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -122,10 +120,11 @@ export type CommunityOrderByInput =
   | "privacy_ASC"
   | "privacy_DESC";
 
-export type CommunityWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  name?: String;
-}>;
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface CommunityUpdatebannedMembersIdsInput {
+  set?: ID_Input[] | ID_Input;
+}
 
 export interface CommunityCreateInput {
   ownerId?: ID_Input;
@@ -135,13 +134,23 @@ export interface CommunityCreateInput {
   membersIds?: CommunityCreatemembersIdsInput;
   bannedMembersIds?: CommunityCreatebannedMembersIdsInput;
   privacy?: Privacy;
+  storyIds?: CommunityCreatestoryIdsInput;
 }
+
+export type CommunityWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
 
 export interface CommunityCreatemembersIdsInput {
   set?: ID_Input[] | ID_Input;
 }
 
 export interface CommunityCreatebannedMembersIdsInput {
+  set?: ID_Input[] | ID_Input;
+}
+
+export interface CommunityCreatestoryIdsInput {
   set?: ID_Input[] | ID_Input;
 }
 
@@ -153,6 +162,7 @@ export interface CommunityUpdateInput {
   membersIds?: CommunityUpdatemembersIdsInput;
   bannedMembersIds?: CommunityUpdatebannedMembersIdsInput;
   privacy?: Privacy;
+  storyIds?: CommunityUpdatestoryIdsInput;
 }
 
 export interface CommunityUpdatemembersIdsInput {
@@ -168,6 +178,10 @@ export interface CommunitySubscriptionWhereInput {
   AND?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
   OR?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
   NOT?: CommunitySubscriptionWhereInput[] | CommunitySubscriptionWhereInput;
+}
+
+export interface CommunityUpdatestoryIdsInput {
+  set?: ID_Input[] | ID_Input;
 }
 
 export interface CommunityWhereInput {
@@ -266,12 +280,22 @@ export interface CommunityWhereInput {
   NOT?: CommunityWhereInput[] | CommunityWhereInput;
 }
 
-export interface CommunityUpdatebannedMembersIdsInput {
-  set?: ID_Input[] | ID_Input;
-}
-
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface BatchPayloadNode {
+  count: Long;
+}
+
+export interface BatchPayload extends Promise<BatchPayloadNode>, Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayloadNode>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface AggregateCommunityNode {
@@ -290,38 +314,6 @@ export interface AggregateCommunitySubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BatchPayloadNode {
-  count: Long;
-}
-
-export interface BatchPayload extends Promise<BatchPayloadNode>, Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayloadNode>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface CommunityEdgeNode {
-  cursor: String;
-}
-
-export interface CommunityEdge
-  extends Promise<CommunityEdgeNode>,
-    Fragmentable {
-  node: <T = Community>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CommunityEdgeSubscription
-  extends Promise<AsyncIterator<CommunityEdgeNode>>,
-    Fragmentable {
-  node: <T = CommunitySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface CommunityNode {
   id: ID_Output;
   ownerId?: ID_Output;
@@ -333,6 +325,7 @@ export interface CommunityNode {
   membersIds: ID_Output[];
   bannedMembersIds: ID_Output[];
   privacy?: Privacy;
+  storyIds: ID_Output[];
 }
 
 export interface Community extends Promise<CommunityNode>, Fragmentable {
@@ -346,6 +339,7 @@ export interface Community extends Promise<CommunityNode>, Fragmentable {
   membersIds: () => Promise<ID_Output[]>;
   bannedMembersIds: () => Promise<ID_Output[]>;
   privacy: () => Promise<Privacy>;
+  storyIds: () => Promise<ID_Output[]>;
 }
 
 export interface CommunitySubscription
@@ -361,6 +355,7 @@ export interface CommunitySubscription
   membersIds: () => Promise<AsyncIterator<ID_Output[]>>;
   bannedMembersIds: () => Promise<AsyncIterator<ID_Output[]>>;
   privacy: () => Promise<AsyncIterator<Privacy>>;
+  storyIds: () => Promise<AsyncIterator<ID_Output[]>>;
 }
 
 export interface CommunityConnectionNode {}
@@ -427,6 +422,24 @@ export interface CommunitySubscriptionPayloadSubscription
   previousValues: <T = CommunityPreviousValuesSubscription>() => T;
 }
 
+export interface CommunityEdgeNode {
+  cursor: String;
+}
+
+export interface CommunityEdge
+  extends Promise<CommunityEdgeNode>,
+    Fragmentable {
+  node: <T = Community>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CommunityEdgeSubscription
+  extends Promise<AsyncIterator<CommunityEdgeNode>>,
+    Fragmentable {
+  node: <T = CommunitySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
 export interface CommunityPreviousValuesNode {
   id: ID_Output;
   ownerId?: ID_Output;
@@ -438,6 +451,7 @@ export interface CommunityPreviousValuesNode {
   membersIds: ID_Output[];
   bannedMembersIds: ID_Output[];
   privacy?: Privacy;
+  storyIds: ID_Output[];
 }
 
 export interface CommunityPreviousValues
@@ -453,6 +467,7 @@ export interface CommunityPreviousValues
   membersIds: () => Promise<ID_Output[]>;
   bannedMembersIds: () => Promise<ID_Output[]>;
   privacy: () => Promise<Privacy>;
+  storyIds: () => Promise<ID_Output[]>;
 }
 
 export interface CommunityPreviousValuesSubscription
@@ -468,6 +483,7 @@ export interface CommunityPreviousValuesSubscription
   membersIds: () => Promise<AsyncIterator<ID_Output[]>>;
   bannedMembersIds: () => Promise<AsyncIterator<ID_Output[]>>;
   privacy: () => Promise<AsyncIterator<Privacy>>;
+  storyIds: () => Promise<AsyncIterator<ID_Output[]>>;
 }
 
 /*

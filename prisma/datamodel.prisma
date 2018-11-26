@@ -9,6 +9,7 @@ type Community {
   membersIds: [ID!]!
   bannedMembersIds: [ID!]!
   privacy: Privacy @default(value: PUBLIC)
+  storyIds: [ID!]!
 }
 
 enum Privacy {

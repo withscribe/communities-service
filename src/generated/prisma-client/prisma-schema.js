@@ -18,6 +18,7 @@ type Community {
   membersIds: [ID!]!
   bannedMembersIds: [ID!]!
   privacy: Privacy
+  storyIds: [ID!]!
 }
 
 type CommunityConnection {
@@ -38,9 +39,14 @@ input CommunityCreateInput {
   membersIds: CommunityCreatemembersIdsInput
   bannedMembersIds: CommunityCreatebannedMembersIdsInput
   privacy: Privacy
+  storyIds: CommunityCreatestoryIdsInput
 }
 
 input CommunityCreatemembersIdsInput {
+  set: [ID!]
+}
+
+input CommunityCreatestoryIdsInput {
   set: [ID!]
 }
 
@@ -79,6 +85,7 @@ type CommunityPreviousValues {
   membersIds: [ID!]!
   bannedMembersIds: [ID!]!
   privacy: Privacy
+  storyIds: [ID!]!
 }
 
 type CommunitySubscriptionPayload {
@@ -111,9 +118,14 @@ input CommunityUpdateInput {
   membersIds: CommunityUpdatemembersIdsInput
   bannedMembersIds: CommunityUpdatebannedMembersIdsInput
   privacy: Privacy
+  storyIds: CommunityUpdatestoryIdsInput
 }
 
 input CommunityUpdatemembersIdsInput {
+  set: [ID!]
+}
+
+input CommunityUpdatestoryIdsInput {
   set: [ID!]
 }
 
