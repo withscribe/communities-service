@@ -101,8 +101,9 @@ setMemberToCommunity = async (_, args, context, info) => {
 removeMemberFromCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
   const community = await context.prisma.community({ id: args.id })
-  const updatedList = community.membersIds.filter(member => member !== args.profileId)
-
+  let updatedList = community.membersIds
+  updatedList = updatedList.filter(member => member !== args.profileId)
+  console.log()
   return await context.prisma.updateCommunity({
     where: {
       id: args.id
