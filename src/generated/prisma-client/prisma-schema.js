@@ -215,6 +215,7 @@ input CommunityWhereInput {
 
 input CommunityWhereUniqueInput {
   id: ID
+  name: String
 }
 
 scalar DateTime

@@ -2,7 +2,7 @@ type Community {
   id: ID! @unique
   ownerId: ID
   moderatorId: String @default(value: "No Moderator")
-  name: String!
+  name: String! @unique
   description: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -16,4 +16,3 @@ enum Privacy {
   PRIVATE
   INVITE_ONLY
 }
-
