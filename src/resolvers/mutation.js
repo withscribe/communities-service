@@ -82,6 +82,23 @@ setMemberToCommunity = async (_, args, context, info) => {
   }).$fragment(communityFragment)
 }
 
+removeMemberFromCommunity = async (_, args, context, info) => {
+  const payload = verifyToken(context)
+  const community = await context.prisma.community({ id: args.id })
+  const updatedList = community.membersIds.filter(member => member !== args.profileId)
+
+  return await context.prisma.updateCommunity({
+    where: {
+      id: args.id
+    },
+    data: {
+      membersIds: {
+        set: updatedList
+      }
+    }
+  }).$fragment(communityFragment)
+}
+
 inviteMemberToCommunity = (_, args, context, info) => {
     const payload = verifyToken(context)
 

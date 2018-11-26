@@ -12,6 +12,7 @@ type Mutation {
   addStoryToCommunity(id: ID!, storyId: ID!): Community
   removeStoryFromCommunity(id: ID!, storyId: ID!): Community
   setMemberToCommunity(id: ID!, profileId: ID!): Community
+  removeMemberFromCommunity(id: ID!, profileId: ID!): Community
   inviteMemberToCommunity(id: ID!, profileId: ID!): Community
 }
 
