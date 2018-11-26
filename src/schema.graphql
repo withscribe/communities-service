@@ -10,6 +10,7 @@ type Mutation {
   updateCommunity(id: ID!, name: String, description: String, moderatorId: ID, privacy: Privacy): Community
   deleteCommunity(id: ID!): Community
   addStoryToCommunity(id: ID!, storyId: ID!): Community
+  addStoryToCommunityByName(id: ID!, name: String!): Community
   removeStoryFromCommunity(id: ID!, storyId: ID!): Community
   setMemberToCommunity(id: ID!, profileId: ID!): Community
   removeMemberFromCommunity(id: ID!, profileId: ID!): Community

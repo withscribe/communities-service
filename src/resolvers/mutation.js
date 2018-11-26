@@ -48,6 +48,22 @@ addStoryToCommunity = async (_, args, context, info) => {
   }).$fragment(communityFragment)
 }
 
+addStoryToCommunityByName = async (_, args, context, info) => {
+  const payload = verifyToken(context)
+  return await context.prisma.updateCommunity({
+    where: {
+      name: args.name
+    },
+    data: {
+      stories: {
+        create: [{
+          storyId: args.storyId
+        }]
+      }
+    }
+  }).$fragment(communityFragment)
+}
+
 removeStoryFromCommunity = async (_, args, context, info) => {
   const payload = verifyToken(context)
   return await context.prisma.updateCommunity({
