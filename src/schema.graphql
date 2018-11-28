@@ -1,3 +1,6 @@
+# Author: Austin Howlett
+# Description: GraphQL Schema - endpoints used in http calls (API definition)
+
 type Query {
   communityByName(name: String!): [Community!]!
   communityById(id: ID!): Community

@@ -1,3 +1,6 @@
+// Author: Austin Howlett
+// Description: Responsible for resolving all query (in relation to REST this would GET endpoints) schema endpoints (business logic)
+
 const { verifyToken } = require('../utils')
 const { communityFragment } = require('../fragments/communityFragment')
 
@@ -14,7 +17,7 @@ communityByName = (_, args, context, info) => {
 }
 
 communities = (_, args, context, info) => {
-  //const payload = verifyToken(context)
+  const payload = verifyToken(context)
   return context.prisma.communities()
     .$fragment(communityFragment)
 }
