@@ -121,10 +121,9 @@ removeMemberFromCommunity = async (_, args, context, info) => {
   }).$fragment(communityFragment)
 }
 
+// TODO: Needs implementation
 inviteMemberToCommunity = (_, args, context, info) => {
     const payload = verifyToken(context)
-
-    // *head scratch*
 }
 
 module.exports = {
