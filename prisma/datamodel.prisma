@@ -1,6 +1,3 @@
-# Author: Austin Howlett
-# Description: Database models
-
 type Community {
   id: ID! @unique
   ownerId: ID

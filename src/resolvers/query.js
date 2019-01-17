@@ -1,4 +1,4 @@
-const { verifyToken } = require('../utils')
+//const { verifyToken } = require('../utils')
 const { communityFragment } = require('../fragments/communityFragment')
 
 // TODO: Review permissions for these... for now full access

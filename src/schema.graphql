@@ -1,6 +1,3 @@
-# Author: Austin Howlett
-# Description: GraphQL Schema - endpoints used in http calls (API definition)
-
 type Query {
   communityByName(name: String!, skip: Int, first: Int, last: Int, before: ID, after: ID): [Community!]!
   communityById(id: ID!, ): Community
@@ -19,7 +16,6 @@ type Mutation {
   removeMemberFromCommunity(id: ID!, profileId: ID!): Community
   inviteMemberToCommunity(id: ID!, profileId: ID!): Community
 }
-
 
 type Community {
   id: ID!
