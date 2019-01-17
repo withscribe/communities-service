@@ -2,10 +2,10 @@
 # Description: GraphQL Schema - endpoints used in http calls (API definition)
 
 type Query {
-  communityByName(name: String!): [Community!]!
-  communityById(id: ID!): Community
-  communities: [Community!]!
-  membersCommunities(communitiesIds: [ID!]!): [Community!]!
+  communityByName(name: String!, skip: Int, first: Int, last: Int, before: ID, after: ID): [Community!]!
+  communityById(id: ID!, ): Community
+  communities(skip: Int, first: Int, last: Int, before: ID, after: ID): [Community!]!
+  membersCommunities(communitiesIds: [ID!]!, skip: Int, first: Int, last: Int, before: ID, after: ID): [Community!]!
 }
 
 type Mutation {
